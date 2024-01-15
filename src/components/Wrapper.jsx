@@ -149,15 +149,10 @@ export default function Wrapper () {
 
             {/* Separator */}
             <div className="h-6 w-px bg-gray-200" aria-hidden="true" />
-              <div className="flex flex-col">
-                <h2 className="text-1l font-bold text-teal-700 mb-2 sm:mr-4 sm:mb-0">NASA's</h2>
-                <h1 className="text-2xl font-bold text-teal-600">Astronomy Photo of the Day</h1>
-              </div>
+                <h1 className="text-xl font-bold text-teal-600 mr-2">NASA's Astronomy Photo of the Day</h1>
           </div>
-          <main className="py-10 bg-teal-50 h-screen">
-            <div className="px-4 sm:px-6 lg:px-8">
+          <main className="p-8 sm:p-20 lg:p-14 bg-teal-50 flex justify-center">
               <PhotoCard/>
-            </div>
           </main>
         </div>
       </div>

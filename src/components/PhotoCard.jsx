@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMeteor } from '@fortawesome/free-solid-svg-icons';
 
 export default function PhotoCard() {
 
@@ -7,29 +9,53 @@ export default function PhotoCard() {
 
     const API_URL = "https://api.nasa.gov/planetary/apod";
     const API_KEY = import.meta.env.VITE_API_KEY;
-    let today = new Date().toISOString().slice(0, 10);
+    // Get today's date
+    let today = new Date();
+    let todayFormatted = today.toISOString().slice(0, 10);
+
+    // Get yesterday's date
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    let yesterdayFormatted = yesterday.toISOString().slice(0, 10);
+
+    console.log("Today:", todayFormatted);
+    console.log("Yesterday:", yesterdayFormatted);
 
     useEffect(() => {
-        const getTodaysPhoto = async () => {
+        const getTodaysPhoto = async (date) => {
             try {
-                const response = await fetch(`${API_URL}?api_key=${API_KEY}&date=${today}&thumbs=true`);
+                const response = await fetch(`${API_URL}?api_key=${API_KEY}&date=${date}&thumbs=true`);
                 const data = await response.json();
-                setPhotoDetails(data);
-                setIsLoading(false);
+                if (data.code && data.code === 404) {
+                    // If the response code is 404, fetch again using yesterday's date
+                    const responseYesterday = await fetch(`${API_URL}?api_key=${API_KEY}&date=${yesterdayFormatted}&thumbs=true`);
+                    const dataYesterday = await responseYesterday.json();
+                    setPhotoDetails(dataYesterday);
+                } else {
+                    // Otherwise, set the photo details using the current response
+                    setPhotoDetails(data);
+                }
             } catch (e) {
                 console.error(e);
+            } finally {
+                setIsLoading(false);
             }
         };
-
-        getTodaysPhoto();
+        getTodaysPhoto(todayFormatted);
     }, []);
 
     return (
-        <div className="bg-white rounded-md p-4 sm:p-6 lg:p-8">
-            {isLoading && <div>Loading... </div>}
-            <h2 className="text-black">{photoDetails.title}</h2>
-            <img src={photoDetails.url} alt={photoDetails.title} className="w-full h-auto"/>
-            <p className="text-black">{photoDetails.explanation}</p>
+        <div className="bg-white max-w-4xl rounded-md shadow-md">
+            {isLoading && <div className="h-full flex flex-col items-center pt-16 lg:pt-32 animate-pulse">
+                <FontAwesomeIcon icon={faMeteor} className="h-16 w-auto text-orange-400 mb-4"/>
+                <p className="text-teal-600 font-bold">Loading...</p>
+            </div>}
+            {!isLoading && <div className="p-4 sm:p-6 lg:p-8">
+                <p className="text-teal-800 text-bold mb-2">{photoDetails.date}</p>
+                <h2 className="text-orange-400 text-2xl mb-4">{photoDetails.title}</h2>
+                <img src={photoDetails.url} alt={photoDetails.title} className="max-h-screen w-auto mx-auto mb-8"/>
+                <p className="text-teal-800 leading-loose">{photoDetails.explanation}</p>
+            </div>}
         </div>
     )
 }
