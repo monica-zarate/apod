@@ -18,9 +18,6 @@ export default function PhotoCard() {
     yesterday.setDate(today.getDate() - 1);
     let yesterdayFormatted = yesterday.toISOString().slice(0, 10);
 
-    console.log("Today:", todayFormatted);
-    console.log("Yesterday:", yesterdayFormatted);
-
     useEffect(() => {
         const getTodaysPhoto = async (date) => {
             try {
@@ -45,7 +42,7 @@ export default function PhotoCard() {
     }, []);
 
     return (
-        <div className="bg-white max-w-4xl rounded-md shadow-md">
+        <div className="bg-white w-full min-h-screen max-w-4xl rounded-md shadow-md">
             {isLoading && <div className="h-full flex flex-col items-center pt-16 lg:pt-32 animate-pulse">
                 <FontAwesomeIcon icon={faMeteor} className="h-16 w-auto text-orange-400 mb-4"/>
                 <p className="text-teal-600 font-bold">Loading...</p>

@@ -9,6 +9,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMeteor } from '@fortawesome/free-solid-svg-icons';
 import PhotoCard from "./PhotoCard";
+import ArchiveSearch from "./ArchiveSearch";
 
 const navigation = [
   { name: 'Today', icon: CalendarIcon, current: true },
@@ -22,6 +23,7 @@ export default function Wrapper () {
     }
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [datePickerOpen, setDatePickerOpen] = useState(false);
 
     return (
       <div>
@@ -117,12 +119,16 @@ export default function Wrapper () {
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
-                      <li key={item.name} className={classNames(
+                      <li 
+                      key={item.name} 
+                      className={classNames(
                             item.current
                               ? 'bg-gray-50 text-teal-600'
                               : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50',
                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer'
-                          )}>
+                          )}
+                      onClick={item.name === "Archive" ? () => setDatePickerOpen(true) : () => {}}
+                      >
                           <item.icon
                             className={classNames(
                               item.current ? 'text-teal-600' : 'text-gray-400 group-hover:text-teal-600',
@@ -155,6 +161,7 @@ export default function Wrapper () {
               <PhotoCard/>
           </main>
         </div>
+        <ArchiveSearch/>
       </div>
     )
 }
