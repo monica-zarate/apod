@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMeteor } from '@fortawesome/free-solid-svg-icons';
 
-export default function PhotoCard() {
+export default function PhotoCard({selectedDate}) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [photoDetails, setPhotoDetails] = useState({});
@@ -19,6 +19,7 @@ export default function PhotoCard() {
     let yesterdayFormatted = yesterday.toISOString().slice(0, 10);
 
     useEffect(() => {
+        setIsLoading(true);
         const getTodaysPhoto = async (date) => {
             try {
                 const response = await fetch(`${API_URL}?api_key=${API_KEY}&date=${date}&thumbs=true`);
@@ -38,8 +39,8 @@ export default function PhotoCard() {
                 setIsLoading(false);
             }
         };
-        getTodaysPhoto(todayFormatted);
-    }, []);
+        getTodaysPhoto(selectedDate !== todayFormatted ? selectedDate : todayFormatted);
+    }, [selectedDate]);
 
     return (
         <div className="bg-white w-full min-h-screen max-w-4xl rounded-md shadow-md">
@@ -50,7 +51,7 @@ export default function PhotoCard() {
             {!isLoading && <div className="p-4 sm:p-6 lg:p-8">
                 <p className="text-teal-800 text-bold mb-2">{photoDetails.date}</p>
                 <h2 className="text-orange-400 text-2xl mb-4">{photoDetails.title}</h2>
-                <img src={photoDetails.url} alt={photoDetails.title} className="max-h-screen w-auto mx-auto mb-8"/>
+                <img src={photoDetails.media_type === "video" ? photoDetails.thumbnail_url : photoDetails.url} alt={photoDetails.title} className="max-h-screen w-auto mx-auto mb-8"/>
                 <p className="text-teal-800 leading-loose">{photoDetails.explanation}</p>
             </div>}
         </div>

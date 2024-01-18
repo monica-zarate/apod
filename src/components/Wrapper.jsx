@@ -24,6 +24,7 @@ export default function Wrapper () {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [datePickerOpen, setDatePickerOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
 
     return (
       <div>
@@ -158,10 +159,10 @@ export default function Wrapper () {
                 <h1 className="text-xl font-bold text-teal-600 mr-2">NASA's Astronomy Photo of the Day</h1>
           </div>
           <main className="p-8 sm:p-20 lg:p-14 bg-teal-50 flex justify-center">
-              <PhotoCard/>
+              <PhotoCard selectedDate={selectedDate}/>
           </main>
         </div>
-        <ArchiveSearch/>
+        <ArchiveSearch open={datePickerOpen} setOpen={setDatePickerOpen} setSelectedDate={setSelectedDate}/>
       </div>
     )
 }
