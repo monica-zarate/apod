@@ -45,6 +45,7 @@ export default function Example({open, setOpen, setSelectedDate}) {
                     <Dialog.Title as="h3" className="text-2xl font-semibold leading-6 text-gray-900">
                       Photo Archive
                     </Dialog.Title>
+                    <p className="text-teal-800 leading-loose mt-8">Find a past photo, archive goes back to June 16th, 1995, <br /> when the first Astronomy Photo of the Day was released.</p>
                     <div className="mt-8">
                       <input
                         type="date"
@@ -54,6 +55,7 @@ export default function Example({open, setOpen, setSelectedDate}) {
                         max={today}
                         value={newDate}
                         onChange={(date) => setNewDate(date.target.value)}
+                        className="border border-gray-400 px-2 py-1.5 rounded-md"
                         />
                     </div>
                   </div>
